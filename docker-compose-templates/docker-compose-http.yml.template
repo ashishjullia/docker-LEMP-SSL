@@ -9,7 +9,10 @@ services:
       - "80:80"
     volumes:
       - type: bind
-        source: ./code
+        source: ./code/index.php
+        target: /var/www/html/index.php
+      - type: volume
+        source: web-root
         target: /var/www/html
       - type: bind
         source: ./nginx/default.conf
@@ -24,8 +27,13 @@ services:
       - app-network
   php:
     image: php:7-fpm
+    container_name: php
     networks:
       - app-network
+    volumes:
+      - type: volume
+          source: web-root
+          target: /var/www/html
       
   certbot:
     image: certbot/certbot
@@ -37,8 +45,8 @@ services:
       - type: volume
         source: certbot-var
         target: /var/lib/letsencrypt
-      - type: bind
-        source: ./code
+      - type: volume
+        source: web-root
         target: /var/www/html
     depends_on:
       - webserver
@@ -47,6 +55,7 @@ services:
 volumes:
   certbot-etc:
   certbot-var:
+  web-root:
 
 networks:
   app-network:

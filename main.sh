@@ -19,12 +19,13 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 
 # compose file without ssl-port and dhparam
-envsubst < "./docker-compose-templates/docker-compose-http.yml.template" > "docker-compose.yml"
+envsubst '${PROD_OR_STAGING}' < "./docker-compose-templates/docker-compose-http.yml.template" > "docker-compose.yml"
 
-# Create services "nodeJS", "webserver (nginx)" and "certbot"
+# default file for nginx
+envsubst '${DOMAIN},${DOMAIN_WWW}' < "./nginx/default-http.conf.template" > "./nginx/default.conf"
+
+# Create services "webserver (nginx)" and "certbot = Exit (0)"
 sudo docker-compose up -d
-
-envsubst < "./nginx/default-http.conf.template" > "./nginx/default.conf"
 
 sleep 10
 
@@ -33,9 +34,9 @@ sudo docker-compose stop webserver
 mkdir dhparam && \
 sudo openssl dhparam -out $PWD/dhparam/dhparam-2048.pem 2048
 
-envsubst < "./nginx/default-https.conf.template" > "./nginx/default.conf"
+envsubst '${DOMAIN},${DOMAIN_WWW}' < "./nginx/default-https.conf.template" > "./nginx/default.conf"
 
-envsubst < "./docker-compose-templates/docker-compose-https.yml.template" > "docker-compose.yml"
+envsubst '${PROD_OR_STAGING}' < "./docker-compose-templates/docker-compose-https.yml.template" > "docker-compose.yml"
 
 sudo docker-compose up -d --force-recreate --no-deps webserver
 
