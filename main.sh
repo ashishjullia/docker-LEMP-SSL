@@ -3,7 +3,7 @@
 # Env variables
 export DOMAIN='geekylanetest.com'
 export DOMAIN_WWW='www.geekylanetest.com'
-export PROD_OR_STAGING='--staging'
+export PROD_OR_STAGING='--force-renewal'
 
 # Update system
 sudo apt update -y
@@ -22,7 +22,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 envsubst '${PROD_OR_STAGING}' < "./docker-compose-templates/docker-compose-http.yml.template" > "docker-compose.yml"
 
 # default file for nginx
-envsubst '${DOMAIN},${DOMAIN_WWW}' < "./nginx/default-http.conf.template" > "./nginx/default.conf"
+envsubst '${DOMAIN},${DOMAIN_WWW}' < "./nginx/config/default-http.conf.template" > "./nginx/config/default.conf"
 
 # Create services "webserver (nginx)" and "certbot = Exit (0)"
 sudo docker-compose up -d
@@ -34,7 +34,7 @@ sudo docker-compose stop webserver
 mkdir dhparam && \
 sudo openssl dhparam -out $PWD/dhparam/dhparam-2048.pem 2048
 
-envsubst '${DOMAIN},${DOMAIN_WWW}' < "./nginx/default-https.conf.template" > "./nginx/default.conf"
+envsubst '${DOMAIN},${DOMAIN_WWW}' < "./nginx/config/default-https.conf.template" > "./nginx/config/default.conf"
 
 envsubst '${PROD_OR_STAGING}' < "./docker-compose-templates/docker-compose-https.yml.template" > "docker-compose.yml"
 

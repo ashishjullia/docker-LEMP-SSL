@@ -5,7 +5,7 @@ server {
 
         location ~ /.well-known/acme-challenge {
           allow all;
-          root /var/www/html;
+          root /usr/share/nginx/html;
         }
 
         location / {
@@ -49,6 +49,6 @@ server {
                 fastcgi_param PATH_INFO $fastcgi_path_info;
         }
 
-        root /var/www/html;
+        root /usr/share/nginx/html;
         index index.php index.html index.htm index.nginx-debian.html;
 }
