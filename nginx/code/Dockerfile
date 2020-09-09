@@ -1,2 +1,2 @@
 FROM nginx:mainline-alpine
-COPY ./index.php /usr/share/nginx/html/index.php
+COPY ./apps/wordpress/wordpress /usr/share/nginx/html/.
