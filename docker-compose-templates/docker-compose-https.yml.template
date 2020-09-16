@@ -78,7 +78,7 @@ volumes:
   certbot-etc:
   certbot-var:
   web-root:
-  my-db
+  my-db:
 
 networks:
   app-network:
