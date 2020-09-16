@@ -3,7 +3,7 @@
 # Env variables
 export DOMAIN='geekylanetest.com'
 export DOMAIN_WWW='www.geekylanetest.com'
-export PROD_OR_STAGING='--force-renewal'
+export PROD_OR_STAGING='--staging'
 
 # Update system
 sudo apt update -y
