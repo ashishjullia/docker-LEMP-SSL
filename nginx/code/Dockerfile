@@ -1,2 +1,3 @@
 FROM nginx:mainline-alpine
-COPY ./apps/wordpress/wordpress /usr/share/nginx/html/.
+COPY  --chown=nginx:nginx ./apps/wordpress/wordpress /usr/share/nginx/html/.
+
