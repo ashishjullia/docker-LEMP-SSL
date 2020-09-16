@@ -29,7 +29,10 @@ services:
     networks:
       - app-network
   php:
-    image: php:7-fpm
+    build: 
+      context: ./php/
+      dockerfile: Dockerfile
+    image: php:v1 
     container_name: php
     networks:
       - app-network
