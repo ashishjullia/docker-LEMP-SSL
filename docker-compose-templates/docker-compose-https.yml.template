@@ -39,6 +39,20 @@ services:
       - type: volume
         source: web-root
         target: /usr/share/nginx/html
+  db:
+    image: mysql
+    container_name: db
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    volumes:
+      - my-db:/var/lib/mysql
+    networks:
+      - app-network
       
   certbot:
     image: certbot/certbot
@@ -61,6 +75,7 @@ volumes:
   certbot-etc:
   certbot-var:
   web-root:
+  my-db
 
 networks:
   app-network:
