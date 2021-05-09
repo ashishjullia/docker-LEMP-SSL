@@ -2,10 +2,7 @@ version: "3.7"
 
 services:
   webserver:
-    build: 
-      context: ./nginx/code
-      dockerfile: Dockerfile
-    image: webserver:v1
+    image: nginx
     container_name: webserver
     restart: unless-stopped
     ports:
@@ -16,7 +13,7 @@ services:
         target: /etc/nginx/nginx.conf
       - type: volume
         source: web-root
-        target: /usr/share/nginx/html
+        target: /var/www/html
       - type: bind
         source: ./nginx/config/default.conf
         target: /etc/nginx/conf.d/default.conf
@@ -30,7 +27,7 @@ services:
       - app-network
   php:
     build: 
-      context: ./php/
+      context: ./php/code
       dockerfile: Dockerfile
     image: php:v1 
     container_name: php
@@ -39,7 +36,10 @@ services:
     volumes:
       - type: volume
         source: web-root
-        target: /usr/share/nginx/html
+        target: /var/www/html
+      - type: bind
+        source: ./php/code/apps/extra-config/php.ini
+        target: /usr/local/etc/php/conf.d/opcache-recommended.ini
   db:
     image: mysql
     container_name: db
@@ -67,10 +67,10 @@ services:
         target: /var/lib/letsencrypt
       - type: volume
         source: web-root
-        target: /usr/share/nginx/html
+        target: /var/www/html
     depends_on:
       - webserver
-    command: certonly --webroot --webroot-path=/usr/share/nginx/html --email ashishjullia19@gmail.com --agree-tos --no-eff-email ${PROD_OR_STAGING} -d geekylanetest.com  -d www.geekylanetest.com
+    command: certonly --webroot --webroot-path=/var/www/html --email ashishjullia19@gmail.com --agree-tos --no-eff-email ${PROD_OR_STAGING} -d geekylanetest.com  -d www.geekylanetest.com
 
 volumes:
   certbot-etc:

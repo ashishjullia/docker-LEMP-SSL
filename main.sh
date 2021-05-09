@@ -25,9 +25,13 @@ envsubst '${PROD_OR_STAGING}' < "./docker-compose-templates/docker-compose-http.
 envsubst '${DOMAIN},${DOMAIN_WWW}' < "./nginx/config/default-http.conf.template" > "./nginx/config/default.conf"
 
 # Setting up the wordpress app
-mkdir ./nginx/code/apps/wordpress
-wget -P ./nginx/code/apps/wordpress https://wordpress.org/latest.tar.gz
-tar -xzvf ./nginx/code/apps/wordpress/latest.tar.gz -C ./nginx/code/apps/wordpress
+# mkdir ./nginx/code/apps/wordpress
+# wget -P ./nginx/code/apps/wordpress https://wordpress.org/latest.tar.gz
+# tar -xzvf ./nginx/code/apps/wordpress/latest.tar.gz -C ./nginx/code/apps/wordpress
+
+mkdir -p ./php/code/apps/wordpress
+wget -P ./php/code/apps/wordpress https://wordpress.org/latest.tar.gz
+tar -xzvf ./php/code/apps/wordpress/latest.tar.gz -C ./php/code/apps/wordpress
 
 
 # Create services "webserver (nginx)" and "certbot = Exit (0)"
